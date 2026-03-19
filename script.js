@@ -1,6 +1,6 @@
 /* ============================================
    EIGHT CENTURIES OF THE DAIRY COW
-   Interactive Script
+   Interactive Script — with Social Pulse Tab
    ============================================ */
 
 (function () {
@@ -8,7 +8,7 @@
 
   // ---- Utility: Intersection Observer for fade-in animations ----
   function initScrollAnimations() {
-    const fadeEls = document.querySelectorAll('.fade-in, .fade-in-timeline');
+    var fadeEls = document.querySelectorAll('.fade-in, .fade-in-timeline');
 
     if (!('IntersectionObserver' in window)) {
       // Fallback: show everything immediately
@@ -144,7 +144,6 @@
     var target = parseInt(counter.getAttribute('data-target'), 10);
     var duration = 2000; // ms
     var startTime = null;
-    var started = false;
 
     function easeOutExpo(t) {
       return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
@@ -193,6 +192,11 @@
     window.addEventListener('scroll', function () {
       if (!ticking) {
         requestAnimationFrame(function () {
+          // Only apply when research view is active
+          if (!document.getElementById('view-research').classList.contains('site-view--active')) {
+            ticking = false;
+            return;
+          }
           var scrollY = window.pageYOffset;
           var heroHeight = hero.offsetHeight;
           if (scrollY < heroHeight) {
@@ -243,8 +247,92 @@
     });
   }
 
+  // ---- Tab Navigation ----
+  function initTabNav() {
+    var tabs = document.querySelectorAll('.top-nav__tab');
+    var views = document.querySelectorAll('.site-view');
+
+    if (!tabs.length || !views.length) return;
+
+    // Restore last active tab from sessionStorage
+    var savedView = null;
+    try { savedView = sessionStorage.getItem('active-view'); } catch (e) {}
+
+    if (savedView) {
+      activateView(savedView, false);
+    }
+
+    tabs.forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        var viewName = this.getAttribute('data-view');
+        activateView(viewName, true);
+      });
+    });
+
+    function activateView(viewName, saveState) {
+      // Update tabs
+      tabs.forEach(function (t) {
+        var isActive = t.getAttribute('data-view') === viewName;
+        t.classList.toggle('top-nav__tab--active', isActive);
+        t.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      });
+
+      // Update views
+      views.forEach(function (v) {
+        var isActive = v.id === 'view-' + viewName;
+        v.classList.toggle('site-view--active', isActive);
+        if (isActive) {
+          v.removeAttribute('hidden');
+        } else {
+          v.setAttribute('hidden', '');
+        }
+      });
+
+      // Scroll to top of page
+      window.scrollTo({ top: 0, behavior: 'instant' });
+
+      // Re-run scroll animations for newly visible elements
+      setTimeout(function () {
+        var newFadeEls = document.querySelectorAll('#view-' + viewName + ' .fade-in:not(.is-visible), #view-' + viewName + ' .fade-in-timeline:not(.is-visible)');
+        if ('IntersectionObserver' in window) {
+          var obs = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                animateBarsIn(entry.target);
+              }
+            });
+          }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+          newFadeEls.forEach(function (el) { obs.observe(el); });
+        } else {
+          newFadeEls.forEach(function (el) { el.classList.add('is-visible'); });
+        }
+
+        // Also re-observe chart containers in the new view
+        var chartContainers = document.querySelectorAll('#view-' + viewName + ' .chart-container, #view-' + viewName + ' .comparison-viz, #view-' + viewName + ' .gain-chart, #view-' + viewName + ' .tradeoff-card, #view-' + viewName + ' .tradeoff-lifespan');
+        if ('IntersectionObserver' in window) {
+          var chartObs = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                animateBarsIn(entry.target);
+                chartObs.unobserve(entry.target);
+              }
+            });
+          }, { threshold: 0.2, rootMargin: '0px 0px -40px 0px' });
+          chartContainers.forEach(function (el) { chartObs.observe(el); });
+        }
+      }, 50);
+
+      // Save state
+      if (saveState) {
+        try { sessionStorage.setItem('active-view', viewName); } catch (e) {}
+      }
+    }
+  }
+
   // ---- Initialize everything ----
   function init() {
+    initTabNav();
     initScrollAnimations();
     initChartObservers();
     initTimelineProgress();

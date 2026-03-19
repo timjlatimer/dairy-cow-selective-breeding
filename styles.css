@@ -1535,3 +1535,765 @@ body.text-xl .article-lead {
   .bar-chart__bar, .comp-bar, .gain-chart__bar,
   .tradeoff-stat-bar__fill, .lifespan-bar__fill { width: var(--bar-width, var(--bar-pct, var(--bar-h, var(--fill-pct, 50%)))); }
 }
+
+
+/* ============================================
+   TOP NAVIGATION
+   ============================================ */
+.top-nav {
+  position: sticky;
+  top: 0;
+  z-index: 500;
+  background: var(--brown-800);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.3);
+}
+
+.top-nav__inner {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 clamp(1.25rem, 4vw, 2.5rem);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  gap: 1rem;
+}
+
+.top-nav__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  flex-shrink: 0;
+}
+
+.top-nav__brand-icon {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.top-nav__brand-text {
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--brown-300);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+  .top-nav__brand-text {
+    display: none;
+  }
+}
+
+.top-nav__tabs {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.top-nav__tab {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--brown-300);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  white-space: nowrap;
+}
+
+.top-nav__tab:hover {
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--cream);
+}
+
+.top-nav__tab--active {
+  background: rgba(200, 136, 58, 0.18);
+  border-color: rgba(200, 136, 58, 0.35);
+  color: var(--accent-light);
+}
+
+.top-nav__tab--active:hover {
+  background: rgba(200, 136, 58, 0.25);
+  color: var(--accent-light);
+}
+
+.top-nav__tab-icon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+/* ============================================
+   SITE VIEW SWITCHING
+   ============================================ */
+.site-view {
+  display: none;
+}
+
+.site-view--active {
+  display: block;
+}
+
+/* ============================================
+   SOCIAL PULSE — HERO
+   ============================================ */
+.sp-hero {
+  position: relative;
+  min-height: 55vh;
+  min-height: 55dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(150deg, #2A1F14 0%, #3D2B1A 35%, #1E3A2F 70%, #2A1F14 100%);
+  overflow: hidden;
+}
+
+.sp-hero__overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 25% 50%, rgba(200, 136, 58, 0.12) 0%, transparent 55%),
+    radial-gradient(ellipse at 75% 30%, rgba(59, 158, 143, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 90%, rgba(139, 107, 181, 0.08) 0%, transparent 40%);
+}
+
+.sp-hero__content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 3rem clamp(1.25rem, 5vw, 3rem);
+  max-width: 720px;
+}
+
+.sp-hero__kicker {
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent-light);
+  margin-bottom: 1rem;
+  opacity: 0;
+  animation: fadeUp 0.8s var(--ease-out-expo) 0.2s forwards;
+}
+
+.sp-hero__title {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  font-weight: 800;
+  color: var(--cream);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.25rem;
+  opacity: 0;
+  animation: fadeUp 1s var(--ease-out-expo) 0.4s forwards;
+}
+
+.sp-hero__subtitle {
+  font-family: var(--font-serif);
+  font-size: clamp(1rem, 2.2vw, 1.25rem);
+  color: var(--brown-200);
+  line-height: 1.65;
+  margin-bottom: 2rem;
+  opacity: 0;
+  animation: fadeUp 0.8s var(--ease-out-expo) 0.7s forwards;
+}
+
+.sp-hero__tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  opacity: 0;
+  animation: fadeUp 0.8s var(--ease-out-expo) 0.9s forwards;
+}
+
+.sp-tag {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--brown-300);
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 100px;
+  padding: 0.3rem 0.875rem;
+}
+
+/* ============================================
+   SOCIAL PULSE — SHARED SECTION STYLES
+   ============================================ */
+.sp-section {
+  padding: var(--section-pad) 0;
+}
+
+.sp-section-label {
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+
+.sp-section-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 4.5vw, 3rem);
+  font-weight: 700;
+  color: var(--brown-800);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  margin-bottom: 1rem;
+}
+
+.sp-section-intro {
+  font-family: var(--font-serif);
+  font-size: 1.125rem;
+  color: var(--text-secondary);
+  max-width: 640px;
+  margin: 0 0 2.5rem;
+  line-height: 1.7;
+}
+
+.sp-lead {
+  font-family: var(--font-serif);
+  font-size: clamp(1.125rem, 2.5vw, 1.375rem);
+  line-height: 1.65;
+  color: var(--text-primary);
+  margin-bottom: 1.25rem;
+}
+
+.sp-note {
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  background: var(--cream-dark);
+  border-left: 3px solid var(--brown-300);
+  border-radius: 0 6px 6px 0;
+  padding: 0.875rem 1.25rem;
+  line-height: 1.6;
+  margin-top: 1.5rem;
+}
+
+.sp-body-text {
+  font-family: var(--font-serif);
+  font-size: 1.0625rem;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  margin-bottom: 1.25rem;
+}
+
+.sp-body-text strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* ============================================
+   SOCIAL PULSE — FRAMING SECTION
+   ============================================ */
+.sp-framing {
+  background: var(--warm-white);
+}
+
+/* ============================================
+   SOCIAL PULSE — STAT CARDS
+   ============================================ */
+.sp-stats-section {
+  background: var(--parchment);
+}
+
+.sp-stat-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+@media (min-width: 640px) {
+  .sp-stat-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 1024px) {
+  .sp-stat-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.sp-stat-card {
+  background: var(--warm-white);
+  border: 1px solid var(--brown-100);
+  border-radius: 16px;
+  padding: clamp(1.25rem, 3vw, 1.75rem);
+  box-shadow: 0 2px 12px rgba(42, 31, 20, 0.06);
+  transition: transform 0.3s var(--ease-out-quart), box-shadow 0.3s;
+  display: flex;
+  flex-direction: column;
+}
+
+.sp-stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 24px rgba(42, 31, 20, 0.1);
+}
+
+.sp-stat-card--accent {
+  background: linear-gradient(145deg, var(--brown-800), var(--green-700));
+  border-color: transparent;
+}
+
+.sp-stat-card--accent .sp-stat-card__number,
+.sp-stat-card--accent .sp-stat-card__pct {
+  color: var(--accent-light);
+}
+
+.sp-stat-card--accent .sp-stat-card__unit {
+  color: var(--brown-200);
+}
+
+.sp-stat-card--accent .sp-stat-card__desc {
+  color: var(--brown-200);
+}
+
+.sp-stat-card--accent .sp-stat-card__source {
+  color: var(--brown-400);
+  border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+.sp-stat-card__number {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 6vw, 3.5rem);
+  font-weight: 800;
+  color: var(--accent-dark);
+  line-height: 1;
+  margin-bottom: 0.125rem;
+}
+
+.sp-stat-card__pct {
+  font-size: 0.6em;
+  font-weight: 700;
+  vertical-align: super;
+}
+
+.sp-stat-card__unit {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.875rem;
+}
+
+.sp-stat-card__desc {
+  font-family: var(--font-serif);
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--text-secondary);
+  flex: 1;
+  margin-bottom: 1rem;
+}
+
+.sp-stat-card__source {
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  color: var(--text-muted);
+  border-top: 1px solid var(--brown-100);
+  padding-top: 0.75rem;
+  margin-top: auto;
+  line-height: 1.4;
+}
+
+/* ============================================
+   SOCIAL PULSE — LEGAL SECTION
+   ============================================ */
+.sp-legal-section {
+  background: var(--cream);
+}
+
+.sp-legal-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+@media (min-width: 640px) {
+  .sp-legal-grid {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+.sp-legal-card {
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  border: 2px solid transparent;
+  text-align: center;
+}
+
+.sp-legal-card--green {
+  background: var(--green-100);
+  border-color: var(--green-300);
+}
+
+.sp-legal-card--amber {
+  background: #FFF8E8;
+  border-color: #E0C060;
+}
+
+.sp-legal-card--red {
+  background: rgba(194, 90, 90, 0.08);
+  border-color: var(--red-400);
+}
+
+.sp-legal-card__icon {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.sp-legal-card--green .sp-legal-card__icon { color: var(--green-600); }
+.sp-legal-card--amber .sp-legal-card__icon { color: #A07820; }
+.sp-legal-card--red .sp-legal-card__icon { color: var(--red-500); }
+
+.sp-legal-card__label {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: 0.375rem;
+}
+
+.sp-legal-card__count {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--brown-800);
+  margin-bottom: 0.375rem;
+}
+
+.sp-legal-card--green .sp-legal-card__count { color: var(--green-700); }
+.sp-legal-card--amber .sp-legal-card__count { color: #7A5A10; }
+.sp-legal-card--red .sp-legal-card__count { color: var(--red-500); }
+
+.sp-legal-card__examples {
+  font-family: var(--font-serif);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+/* ============================================
+   SOCIAL PULSE — CULTURAL MOMENTS
+   ============================================ */
+.sp-moments-section {
+  background: var(--warm-white);
+}
+
+.sp-moments-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+@media (min-width: 768px) {
+  .sp-moments-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.sp-moment-card {
+  background: var(--cream);
+  border: 1px solid var(--brown-100);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(42, 31, 20, 0.06);
+  transition: transform 0.3s var(--ease-out-quart), box-shadow 0.3s;
+}
+
+.sp-moment-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 28px rgba(42, 31, 20, 0.1);
+}
+
+.sp-moment-card__header {
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.sp-moment-card__header--grammy {
+  background: linear-gradient(135deg, #1A1A2E, #16213E);
+}
+
+.sp-moment-card__header--brit {
+  background: linear-gradient(135deg, #2A1A3E, #1E1428);
+}
+
+.sp-moment-card__header--fashion {
+  background: linear-gradient(135deg, var(--brown-700), var(--brown-800));
+}
+
+.sp-moment-card__header--digital {
+  background: linear-gradient(135deg, #1A2E2A, #0F1E1B);
+}
+
+.sp-moment-card__year-badge {
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  font-weight: 800;
+  color: var(--accent-light);
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.sp-moment-card__venue {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  text-align: right;
+  line-height: 1.4;
+}
+
+.sp-moment-card__body {
+  padding: 1.5rem;
+}
+
+.sp-moment-card__name {
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: var(--brown-800);
+  margin-bottom: 0.75rem;
+}
+
+.sp-moment-card__text {
+  font-family: var(--font-serif);
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+}
+
+.sp-moment-card__text em {
+  font-style: italic;
+  color: var(--text-primary);
+}
+
+.sp-moment-card__tag {
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border-top: 1px solid var(--brown-100);
+  padding-top: 0.75rem;
+}
+
+/* ============================================
+   SOCIAL PULSE — PULL QUOTE
+   ============================================ */
+.sp-quote-section {
+  background: var(--parchment);
+}
+
+.sp-pull-quote {
+  border-left: 4px solid var(--accent);
+  margin: 0;
+  padding: 2rem 2rem 2rem 2.5rem;
+  background: var(--warm-white);
+  border-radius: 0 12px 12px 0;
+  box-shadow: 0 2px 12px rgba(42, 31, 20, 0.06);
+}
+
+.sp-pull-quote p {
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
+  font-style: italic;
+  color: var(--brown-700);
+  line-height: 1.45;
+  margin-bottom: 0.75rem;
+}
+
+.sp-pull-quote cite {
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  font-style: normal;
+  letter-spacing: 0.03em;
+}
+
+/* ============================================
+   SOCIAL PULSE — DRIVERS SECTION
+   ============================================ */
+.sp-drivers-section {
+  background: var(--cream);
+}
+
+/* ============================================
+   SOCIAL PULSE — EMPOWERED LIFT BRIDGE
+   ============================================ */
+.sp-bridge-section {
+  background: var(--warm-white);
+}
+
+.sp-bridge-card {
+  background: linear-gradient(145deg, var(--brown-800) 0%, #1E3A2F 100%);
+  border-radius: 20px;
+  padding: clamp(2rem, 5vw, 3rem);
+  box-shadow: 0 8px 40px rgba(42, 31, 20, 0.2);
+  border: 1px solid rgba(200, 136, 58, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.sp-bridge-card::before {
+  content: '';
+  position: absolute;
+  top: -60px;
+  right: -60px;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(200, 136, 58, 0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.sp-bridge-card__eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+}
+
+.sp-bridge-card__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 4vw, 2.25rem);
+  font-weight: 700;
+  color: var(--cream);
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+}
+
+.sp-bridge-card__text {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  line-height: 1.75;
+  color: var(--brown-200);
+  margin-bottom: 1.25rem;
+}
+
+.sp-bridge-card__text:last-of-type {
+  margin-bottom: 2rem;
+}
+
+.sp-bridge-card__text strong {
+  color: var(--accent-light);
+  font-weight: 600;
+}
+
+.sp-bridge-card__footer {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 1.5rem;
+}
+
+.sp-bridge-card__label {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--accent-light);
+}
+
+.sp-bridge-card__tagline {
+  font-family: var(--font-serif);
+  font-size: 0.9375rem;
+  font-style: italic;
+  color: var(--brown-300);
+}
+
+/* ============================================
+   SOCIAL PULSE — FOOTER VARIANT
+   ============================================ */
+.sp-footer {
+  /* inherits .site-footer styles */
+}
+
+/* ============================================
+   RESPONSIVE — SOCIAL PULSE
+   ============================================ */
+@media (max-width: 480px) {
+  .sp-stat-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sp-legal-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sp-moments-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sp-moment-card__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.375rem;
+  }
+
+  .sp-moment-card__venue {
+    text-align: left;
+  }
+
+  .top-nav__tab span:not(.top-nav__tab-icon) {
+    display: none;
+  }
+
+  .top-nav__tab {
+    padding: 0.5rem 0.75rem;
+  }
+}
+
+/* ============================================
+   TEXT SIZE — SOCIAL PULSE ADDITIONS
+   ============================================ */
+body.text-large .sp-body-text,
+body.text-large .sp-stat-card__desc,
+body.text-large .sp-moment-card__text,
+body.text-large .sp-bridge-card__text {
+  font-size: 1.0625rem;
+}
+
+body.text-xl .sp-body-text,
+body.text-xl .sp-stat-card__desc,
+body.text-xl .sp-moment-card__text,
+body.text-xl .sp-bridge-card__text {
+  font-size: 1.1875rem;
+}
